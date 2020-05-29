@@ -12,9 +12,9 @@ def sendWithError(message, error):
 
 radio.on()
 radio.config(group = 0)
-my_address = "DA"
-their_address = "AN"
-header = my_address + their_address
+my_address = "S2"
+their_address = "S1"
+header = my_address + "DE" + their_address
 acknowledge_string = "ACK"
 acknowledge_packet = header + acknowledge_string
 display.show(Image('09990:90009:00990:00000:00900:'))
