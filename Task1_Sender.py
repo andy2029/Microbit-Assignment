@@ -17,18 +17,19 @@ def sendWithError(message, error):
 def waitForAck():
     global received_ack
     start_time = running_time()
-    while running_time() < start_time + 3000:
+    # 10 second timeout
+    while running_time() < start_time + 10000:
             state = "busy"
             message = radio.receive()
             if message is not None:
-                if message[2:4] == my_address and message[4:] == "ACK":
+                if message[4:6] == my_address and message[6:] == "ACK":
                     received_ack = True
                     display.show(Image.YES)
                 else:
                     received_ack = False
-my_address = "AN"
-their_address = "DA"
-header = my_address + their_address
+my_address = "S1"
+their_address = "S2"
+header = my_address + "DE" + their_address
 packets_lost = 0
 packets_sent = 0
 number = 1
@@ -43,8 +44,7 @@ while True:
             number += 1
         packet = header + str(number)
         display.scroll(str(number))
-        sendWithError(packet, 0)
-        # 10 second timeout
+        sendWithError(packet, 50)
         waitForAck()
         if received_ack == False:
             packets_lost += 1
