@@ -23,9 +23,6 @@ seq_n = 0
 
 display.show(Image('09990:90009:00990:00000:00900:'))
 while True:
-    if button_a.is_pressed() and button_b.is_pressed():
-        microbit.display.scroll("AB")
-        break
     if button_a.is_pressed():
         next_message=message[-1]+1
         message.append(next_message)
