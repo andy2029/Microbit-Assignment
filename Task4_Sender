@@ -1,0 +1,51 @@
+from microbit import *
+import random
+import radio
+
+radio.on()
+
+def sendWithError(message, error):
+    generated = random.randint(1, 100)
+    if generated > error:
+        radio.send(message)
+        return True
+    return False
+
+def waitForAck():
+    global received_ack
+    start_time = running_time()
+    while running_time() < start_time + 10000:
+        state = "busy"
+        message = radio.receive()
+        if message is not None:
+            received_ack = True
+            display.show(Image.YES)
+        else:
+            received_ack = False
+
+def get_serial_number(type=hex):
+    NRF_FICR_BASE = 0x10000000
+    DEVICEID_INDEX = 25
+
+    @micropython.asm_thumb
+    def reg_read(r0):
+        ldr(r0, [r0, 0])
+    return type(reg_read(NRF_FICR_BASE + (DEVICEID_INDEX*4)))
+
+MAC_Address = 0
+IP_Address = 192.168.0.1
+received_ack = False
+a = "AIR"
+b = "!92"
+display.show(Image('09990:90009:00990:00000:00900:'))
+
+while True:
+    if MAC_Address == 0:
+        MAC_Address = get_serial_number()
+    if button_a.was_pressed():
+        display.scroll(b)
+        sendWithError(b)
+        sleep(1000)
+        display.show(Image('09990:90009:00990:00000:00900:'))
+        
+    sleep(100)
