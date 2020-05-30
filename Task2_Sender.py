@@ -14,9 +14,6 @@ def sendWithError(message, error):
         return True
     return False
 
-my_address = "S1"
-their_address = "S2"
-header = my_address + "DE" + their_address
 message = [0]
 seq_first = 0
 seq_n = 0
@@ -26,7 +23,7 @@ while True:
     if button_a.is_pressed():
         next_message=message[-1]+1
         message.append(next_message)
-        packet = header + str(next_message)
+        packet = str(next_message)
         display.scroll(str(next_message))
         sendWithError(packet, 0)
         display.show(Image.YES)
@@ -46,7 +43,7 @@ while True:
             if button_a.get_presses() == 1:
                 if not seq_n == 0:
                     n_message = message[-seq_n]
-                    packet = header + str(n_message)
+                    packet = str(n_message)
                     sendWithError(packet, 0)
                     display.scroll(n_message)
         display.show(Image('09990:90009:00990:00000:00900:'))
